@@ -1,0 +1,281 @@
+id: CRMDemo
+name: CRM Demo
+description: CRM Demo
+status: PUBLISHED
+properties:
+  __nsx.edge_reservation_policy:
+    fixed: Workload
+    required: false
+    secured: false
+    visible: false
+components:
+  DefaultExternalNetworkProfile:
+    type: Infrastructure.Network.Network.Existing
+    data:
+      name:
+        fixed: DefaultExternalNetworkProfile
+      network_profile:
+        fixed: Default External Network Profile
+  Demo_App_Application_1:
+    type: Software.DemoAppApplication
+    dependsOn:
+    - Demo_App_Database_1
+    data:
+      demo_app_mysql_database:
+        default: ${_resource~Demo_App_Database_1~mysql_app_database}
+        required: true
+      demo_app_mysql_password:
+        default: ${_resource~Demo_App_Database_1~mysql_user_password}
+        required: true
+      demo_app_mysql_server:
+        default: ${_resource~db_tier~ip_address}
+        required: true
+      demo_app_mysql_user:
+        default: ${_resource~Demo_App_Database_1~mysql_user_name}
+        required: true
+      host:
+        fixed: ${_resource~app_tier}
+  Demo_App_Database_1:
+    type: Software.DemoAppDatabase
+    data:
+      host:
+        fixed: ${_resource~db_tier}
+      mysql_app_database:
+        default: demo
+        required: true
+        visible: true
+      mysql_bind_address:
+        default: ${_resource~db_tier~ip_address}
+        required: true
+      mysql_root_password:
+        default: VMware123
+        required: true
+        secured: false
+        visible: true
+      mysql_user_name:
+        default: demouser
+        required: true
+        visible: true
+  Demo_App_Web_1:
+    type: Software.DemoAppWeb
+    dependsOn:
+    - Demo_App_Application_1
+    data:
+      app_server_name:
+        fixed: ${_resource~app_tier~ip_address}
+        required: true
+      host:
+        fixed: ${_resource~web_tier}
+      web_server_name:
+        fixed: ${_resource~web_tier~ip_address}
+        required: true
+        visible: false
+  app_tier:
+    type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
+    data:
+      _cluster:
+        default: 1
+        max: 1
+        min: 1
+      action:
+        fixed: LinkedClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '1'
+      cpu:
+        default: 1
+        max: 1
+        min: 1
+      disks:
+      - capacity: 10
+        custom_properties: null
+        id: 1539154717084
+        initial_location: ''
+        is_clone: true
+        label: Hard disk 1
+        storage_reservation_policy: ''
+        userCreated: false
+        volumeId: 0
+      guest_customization_specification: CentOS
+      max_network_adapters: {}
+      max_volumes: {}
+      memory:
+        default: 1024
+        max: 4096
+        min: 1024
+      nics:
+      - address: ''
+        assignment_type: Static
+        id: 0
+        load_balancing: ''
+        network: ${_resource~DefaultExternalNetworkProfile}
+        network_profile: Default External Network Profile
+      provisioning_workflow:
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
+      reservation_policy:
+        id: Workload
+        label: Workload
+      security_groups: []
+      security_tags: []
+      snapshot_name:
+        fixed: appauth-snap
+      source_machine:
+        fixed:
+          id: cc3f7986-60a8-44c9-a4e7-754b9a8aa35d
+          label: base-linux-cli
+      source_machine_external_snapshot:
+        fixed: 11
+      source_machine_name:
+        fixed: base-linux-cli
+      source_machine_vmsnapshot:
+        fixed:
+          id: '3008'
+      storage:
+        default: 10
+        max: 40
+        min: 10
+  db_tier:
+    type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
+    data:
+      _cluster:
+        default: 1
+        max: 1
+        min: 1
+      action:
+        fixed: LinkedClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '1'
+      cpu:
+        default: 1
+        max: 2
+        min: 1
+      disks:
+      - capacity: 10
+        custom_properties: null
+        id: 1539154767747
+        initial_location: ''
+        is_clone: true
+        label: Hard disk 1
+        storage_reservation_policy: ''
+        userCreated: false
+        volumeId: 0
+      guest_customization_specification: CentOS
+      max_network_adapters: {}
+      max_volumes: {}
+      memory:
+        default: 1024
+        max: 4096
+        min: 1024
+      nics:
+      - address: ''
+        assignment_type: Static
+        id: 0
+        load_balancing: ''
+        network: ${_resource~DefaultExternalNetworkProfile}
+        network_profile: Default External Network Profile
+      provisioning_workflow:
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
+      reservation_policy:
+        id: Workload
+        label: Workload
+      security_groups: []
+      security_tags: []
+      snapshot_name:
+        fixed: appauth-snap
+      source_machine:
+        fixed:
+          id: cc3f7986-60a8-44c9-a4e7-754b9a8aa35d
+          label: base-linux-cli
+      source_machine_external_snapshot:
+        fixed: 11
+      source_machine_name:
+        fixed: base-linux-cli
+      source_machine_vmsnapshot:
+        fixed:
+          id: '3008'
+      storage:
+        default: 10
+        max: 40
+        min: 10
+  web_tier:
+    type: Infrastructure.CatalogItem.Machine.Virtual.vSphere
+    data:
+      _cluster:
+        default: 1
+        max: 1
+        min: 1
+      action:
+        fixed: LinkedClone
+      allow_storage_policies:
+        fixed: false
+      blueprint_type:
+        fixed: '1'
+      cpu:
+        default: 1
+        max: 1
+        min: 1
+      disks:
+      - capacity: 10
+        custom_properties: null
+        id: 1539154653044
+        initial_location: ''
+        is_clone: true
+        label: Hard disk 1
+        storage_reservation_policy: ''
+        userCreated: false
+        volumeId: 0
+      guest_customization_specification: CentOS
+      max_network_adapters: {}
+      max_volumes: {}
+      memory:
+        default: 1024
+        max: 4096
+        min: 1024
+      nics:
+      - address: ''
+        assignment_type: Static
+        id: 0
+        load_balancing: ''
+        network: ${_resource~DefaultExternalNetworkProfile}
+        network_profile: Default External Network Profile
+      provisioning_workflow:
+        fixed:
+          id: CloneWorkflow
+          label: CloneWorkflow
+      reservation_policy:
+        id: Workload
+        label: Workload
+      security_groups: []
+      security_tags: []
+      snapshot_name:
+        fixed: appauth-snap
+      source_machine:
+        fixed:
+          id: cc3f7986-60a8-44c9-a4e7-754b9a8aa35d
+          label: base-linux-cli
+      source_machine_external_snapshot:
+        fixed: 11
+      source_machine_name:
+        fixed: base-linux-cli
+      source_machine_vmsnapshot:
+        fixed:
+          id: '3008'
+      storage:
+        default: 10
+        max: 40
+        min: 10
+layout:
+  DefaultExternalNetworkProfile: 1,0
+  Demo_App_Application_1: 0,0
+  Demo_App_Database_1: 0,0
+  Demo_App_Web_1: 0,0
+  app_tier: 0,1
+  db_tier: 0,2
+  web_tier: 0,0

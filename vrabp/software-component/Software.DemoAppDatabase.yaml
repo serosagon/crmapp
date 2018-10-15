@@ -1,0 +1,192 @@
+'@type': "SoftwareComponentType"
+createdDate: "2018-10-10T05:06:40.918Z"
+lastUpdated: "2018-10-10T08:39:56.430Z"
+id: "Software.DemoAppDatabase"
+name: "Demo App Database"
+description: "Installs and configures the Demo App Database Server"
+publishStatus: "PUBLISHED"
+publishStatusName: "Published"
+schema:
+  fields:
+  - id: "mysql_app_database"
+    label: "mysql_app_database"
+    description: "Name of the Demo App database"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "demo"
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+  - id: "mysql_root_password"
+    label: "mysql_root_password"
+    description: "Password for the MySQL root users"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "encrypted"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: false
+    isMultiValued: false
+  - id: "mysql_bind_address"
+    label: "mysql_bind_address"
+    description: "IP Address that MySQL should listen on"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: ""
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+  - id: "host"
+    label: "Container"
+    description: ""
+    dataType:
+      type: "ref"
+      componentTypeId: "com.vmware.csp.iaas.blueprint.service"
+      classId: "Infrastructure.Machine.Schema"
+      label: "Machine"
+    state:
+      dependencies: []
+      facets:
+      - type: "visible"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: false
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+      - type: "internal"
+        value:
+          type: "constantClause"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+  - id: "mysql_user_password"
+    label: "mysql_user_password"
+    description: "Password for the MySQL Demo App user"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "derivedValue"
+        value:
+          type: "constant"
+      - type: "editable"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: false
+    isMultiValued: false
+  - id: "mysql_user_name"
+    label: "mysql_user_name"
+    description: "Name of the Demo App user"
+    dataType:
+      type: "primitive"
+      typeId: "STRING"
+    state:
+      dependencies: []
+      facets:
+      - type: "defaultValue"
+        value:
+          type: "constant"
+          value:
+            type: "string"
+            value: "demouser"
+      - type: "mandatory"
+        value:
+          type: "constant"
+          value:
+            type: "boolean"
+            value: true
+    isMultiValued: false
+containerFieldId: "host"
+lifecycleTasks:
+- createdDate: "2018-10-10T05:06:40.919Z"
+  lastUpdated: "2018-10-11T12:28:22.997Z"
+  script:
+    scriptContent: "#!/bin/bash\n# Add MariaDB YUM Repositories\necho [mariadb] >\
+      \ /etc/yum.repos.d/mariadb.repo\necho \"name = MariaDB\" >> /etc/yum.repos.d/mariadb.repo\n\
+      echo \"baseurl = http://yum.mariadb.org/10.0/centos6-amd64\" >> /etc/yum.repos.d/mariadb.repo\n\
+      echo \"gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB\" >> /etc/yum.repos.d/mariadb.repo\n\
+      echo \"gpgcheck=1\" >> /etc/yum.repos.d/mariadb.repo\n# Install the database\n\
+      /usr/bin/yum -y install mariadb-server\n#start of moved lines\n#end of moved\
+      \ lines"
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "INSTALL"
+    label: "Install"
+- createdDate: "2018-10-10T05:06:40.920Z"
+  lastUpdated: "2018-10-11T12:28:22.997Z"
+  script:
+    scriptContent: "#!/bin/bash\n#insert moved lines here\n# Enable and start the\
+      \ MySQL service\n##service mysql start\n/etc/init.d/mysql start\n## Configure\
+      \ the Database\nmysql_user_password=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9'\
+      \ | fold -w 32 | head -n 1)\n# Secure the database installation\n/usr/bin/mysqladmin\
+      \ -u root password \"$mysql_root_password\"\n/usr/bin/mysql -u root -p\"$mysql_root_password\"\
+      \ -e \"UPDATE mysql.user SET Password=PASSWORD('$mysql_root_password') WHERE\
+      \ User='root'\"\n/usr/bin/mysql -u root -p\"$mysql_root_password\" -e \"DELETE\
+      \ FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1',\
+      \ '::1')\"\n/usr/bin/mysql -u root -p\"$mysql_root_password\" -e \"DELETE FROM\
+      \ mysql.user WHERE User=''\"\n/usr/bin/mysql -u root -p\"$mysql_root_password\"\
+      \ -e \"DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%'\"\n# Add the app\
+      \ user and database\n/usr/bin/mysql -u root -p\"$mysql_root_password\" -e \"\
+      CREATE DATABASE $mysql_app_database;\"\n/usr/bin/mysql -u root -p\"$mysql_root_password\"\
+      \ -e \"GRANT ALL PRIVILEGES ON $mysql_app_database.* TO '$mysql_user_name'@'%'\
+      \ IDENTIFIED BY '$mysql_user_password';\"\n# Flush privileges\n/usr/bin/mysql\
+      \ -u root -p\"$mysql_root_password\" -e \"FLUSH PRIVILEGES\"\n# Enable remote\
+      \ connections\n#echo \"bind-address = $mysql_bind_address\" >> /etc/my.cnf\n\
+      #service mysql restart\n/etc/init.d/mysql restart\n# Open MySQL firewall for\
+      \ remote connections\n#/usr/bin/firewall-cmd --zone=public --add-service=mysql\
+      \ --permanent\n#/usr/bin/firewall-cmd --reload\n"
+    isRebootAfter: false
+    scriptTypeId: "Bash"
+  taskDescriptorRef:
+    id: "CONFIGURE"
+    label: "Configure"
