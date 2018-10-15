@@ -133,13 +133,13 @@ lifecycleTasks:
   script:
     scriptContent: "#!/bin/bash\n#eros add this - start\nexport PATH=$PATH:/usr/local/sbin:/usr/sbin:/sbin:/root/bin\n\
       #eros add this - end\n# Download and install Demo app\n/usr/bin/wget -O /var/www/html/config.php\
-      \ https://raw.githubusercontent.com/sammcgeown/vRA-3-Tier-Application/master/app/config.php\n\
-      /usr/bin/wget -O /var/www/html/create.php https://raw.githubusercontent.com/sammcgeown/vRA-3-Tier-Application/master/app/create.php\n\
-      /usr/bin/wget -O /var/www/html/delete.php https://raw.githubusercontent.com/sammcgeown/vRA-3-Tier-Application/master/app/delete.php\n\
-      /usr/bin/wget -O /var/www/html/error.php https://raw.githubusercontent.com/sammcgeown/vRA-3-Tier-Application/master/app/error.php\n\
-      /usr/bin/wget -O /var/www/html/index.php https://raw.githubusercontent.com/sammcgeown/vRA-3-Tier-Application/master/app/index.php\n\
-      /usr/bin/wget -O /var/www/html/read.php https://raw.githubusercontent.com/sammcgeown/vRA-3-Tier-Application/master/app/read.php\n\
-      /usr/bin/wget -O /var/www/html/update.php https://raw.githubusercontent.com/sammcgeown/vRA-3-Tier-Application/master/app/update.php\n\
+      \ https://raw.githubusercontent.com/serosagon/crmapp/master/app/config.php\n\
+      /usr/bin/wget -O /var/www/html/create.php https://raw.githubusercontent.com/serosagon/crmapp/master/app/create.php\n\
+      /usr/bin/wget -O /var/www/html/delete.php https://raw.githubusercontent.com/serosagon/crmapp/master/app/delete.php\n\
+      /usr/bin/wget -O /var/www/html/error.php https://raw.githubusercontent.com/serosagon/crmapp/master/app/error.php\n\
+      /usr/bin/wget -O /var/www/html/index.php https://raw.githubusercontent.com/serosagon/crmapp/master/app/index.php\n\
+      /usr/bin/wget -O /var/www/html/read.php https://raw.githubusercontent.com/serosagon/crmapp/master/app/read.php\n\
+      /usr/bin/wget -O /var/www/html/update.php https://raw.githubusercontent.com/serosagon/crmapp/master/app/update.php\n\
       # Configure the Demo App\n#/usr/bin/sed -i \"s@DBName@$demo_app_mysql_database@\"\
       \ /var/www/html/config.php\n#/usr/bin/sed -i \"s@DBUser@$demo_app_mysql_user@\"\
       \ /var/www/html/config.php\n#/usr/bin/sed -i \"s@DBPassword@$demo_app_mysql_password@\"\
@@ -148,7 +148,7 @@ lifecycleTasks:
       \ /var/www/html/config.php\n/bin/sed -i \"s@DBUser@$demo_app_mysql_user@\" /var/www/html/config.php\n\
       /bin/sed -i \"s@DBPassword@$demo_app_mysql_password@\" /var/www/html/config.php\n\
       /bin/sed -i \"s@DBServer@$demo_app_mysql_server@\" /var/www/html/config.php\n\
-      \n# Download and run the DB script\n/usr/bin/wget -O /tmp/employees.sql https://raw.githubusercontent.com/sammcgeown/vRA-3-Tier-Application/master/app/employees.sql\n\
+      \n# Download and run the DB script\n/usr/bin/wget -O /tmp/employees.sql https://raw.githubusercontent.com/serosagon/crmapp/master/app/employees.sql\n\
       /usr/bin/mysql -u \"$demo_app_mysql_user\" -p\"$demo_app_mysql_password\" demo\
       \ -h $demo_app_mysql_server < /tmp/employees.sql\n# Configure and start Apache\n\
       #/usr/bin/sed -i \"/^<Directory \\\"\\/var\\/www\\/html\\\">/,/^<\\/Directory>/{s/AllowOverride\

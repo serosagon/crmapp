@@ -87,15 +87,15 @@ lifecycleTasks:
   script:
     scriptContent: "#!/bin/bash\n# Download the reverse proxy configuration\nexport\
       \ PATH=$PATH:/usr/local/sbin:/usr/sbin:/sbin:/root/bin\n#/usr/bin/wget -O /etc/nginx/conf.d/proxy.conf\
-      \ https://raw.githubusercontent.com/sammcgeown/vRA-3-Tier-Application/master/app/proxy.nginx.conf\n\
-      /usr/bin/wget -O /etc/nginx/conf.d/proxy.conf https://raw.githubusercontent.com/sammcgeown/vRA-3-Tier-Application/master/config/proxy.nginx.conf\n\
+      \ https://raw.githubusercontent.com/serosagon/crmapp/master/config/proxy.nginx.conf\n\
+      /usr/bin/wget -O /etc/nginx/conf.d/proxy.conf https://raw.githubusercontent.com/serosagon/crmapp/master/config/proxy.nginx.conf\n\
       #/usr/bin/sed -i \"s@SERVERNAME@$web_server_name@\" /etc/nginx/conf.d/proxy.conf\n\
       #/usr/bin/sed -i \"s@APPTIER@$app_server_name@\" /etc/nginx/conf.d/proxy.conf\n\
       /bin/sed -i \"s@SERVERNAME@$web_server_name@\" /etc/nginx/conf.d/proxy.conf\n\
       /bin/sed -i \"s@APPTIER@$app_server_name@\" /etc/nginx/conf.d/proxy.conf\n#\
       \ Create the SSL folder\n#/usr/bin/mkdir /etc/nginx/ssl\n/bin/mkdir /etc/nginx/ssl\n\
-      # Download the proxy SSL conf\n#/usr/bin/wget -O /etc/nginx/ssl/proxy.conf https://raw.githubusercontent.com/sammcgeown/vRA-3-Tier-Application/master/app/proxy.ssl.conf\n\
-      /usr/bin/wget -O /etc/nginx/ssl/proxy.conf https://raw.githubusercontent.com/sammcgeown/vRA-3-Tier-Application/master/config/proxy.ssl.conf\n\
+      # Download the proxy SSL conf\n#/usr/bin/wget -O /etc/nginx/ssl/proxy.conf https://raw.githubusercontent.com/serosagon/crmapp/master/config/proxy.ssl.conf\n\
+      /usr/bin/wget -O /etc/nginx/ssl/proxy.conf https://raw.githubusercontent.com/serosagon/crmapp/master/config/proxy.ssl.conf\n\
       #/usr/bin/sed -i \"s@WEBSERVERNAME@$web_server_name@\" /etc/nginx/ssl/proxy.conf\n\
       /bin/sed -i \"s@WEBSERVERNAME@$web_server_name@\" /etc/nginx/ssl/proxy.conf\n\
       # Generate SSL keys\n/usr/bin/openssl req -x509 -nodes -days 1825 -newkey rsa:2048\
