@@ -82,7 +82,7 @@
                 </div>
             </div>
         </div>
-        <h2>BNI Workshop Demo 2018</h2>
+        <h2>Hostname</h2>
     </div>
 </body>
 </html>
