@@ -82,7 +82,7 @@
                 </div>
             </div>
         </div>
-        <h2>Hostname</h2>
+        <h2>BTN Workshop November 2018</h2>
     </div>
 </body>
 </html>
